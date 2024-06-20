@@ -1,0 +1,255 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Title</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'index.css' %}">
+</head>
+<style src="index.css">
+    body{
+        width: 100%;
+    height: 75%;
+    left: 0%;
+    margin: 0px;
+
+    }
+    .container{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    font-size: x-large;
+    height: 50%;
+    padding: 6% 1%;
+    gap: 10px;
+    align-items: flex-start;
+    justify-content: center;
+  
+}
+input{
+    background-color: transparent;
+    border:1px solid blue ;
+    height: 4vh;
+    border-radius: 15px;
+}
+.addBoxForm{
+    display: flex;
+    flex-direction: column;
+    width: 50% !important;
+    height: 100%;
+    background-color: azure;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 15px;
+}
+.rowDAta{
+    background-image: url("https://i.pinimg.com/736x/cd/84/dc/cd84dcc6e19a0e1a4aedb7a36aa98d68.jpg");
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center;
+    display: flex;
+    flex-direction: row;
+    width: 100% !important;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+   
+}
+.addTrackForm{
+    display: flex;
+    flex-direction: column;
+    width: 50% !important;
+    height: 100%;
+    background-color: azure;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 15px;}
+
+.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1%;
+}
+form{
+    padding: 2%;
+    margin: 2%;
+}
+.buttons{
+    height: 25% !important;
+    display: flex;
+    font-size: x-large;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+select{
+    width: 30%;
+    height: 5vh;
+    background-color: transparent;
+    border: 1px solid blue;
+    border-radius: 15px;
+}
+button {
+    width: 30%;
+    height: 5vh;
+}
+.reset{
+    background-color: transparent;
+    border: 1px solid red;
+    border-radius: 15px;
+    color: red;
+}
+.submit{
+    background-color: blue;
+    border: 1px solid blue;
+    border-radius: 15px;
+    color: black;
+}
+.but_head{
+    background-color: transparent;
+    border: 1px solid blue;
+    border-radius: 15px;
+    color: black;
+}
+.header{
+    padding: 2%;
+    width: 100;
+    height: 25%;
+    background-color: azure;
+}
+.buttons_head{
+    height: 25% !important;
+    display: flex;
+    font-size: x-large;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 30%;
+}
+.tables{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    align-items: center;
+    justify-content: space-around;
+    gap: 10vh;
+}
+.boxTable{
+    display: flex;
+    background-color: azure;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 15px;
+    flex-direction: column;
+    width: 100%;
+}
+.carTable{
+    display: flex;
+    background-color: azure;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 15px;
+    flex-direction: column;
+    width: 100%;
+}
+table{
+    width: 100% !important;
+    overflow-x:scroll;
+    height:25%;
+}
+</style>
+<body>
+    <header class="header">
+        <div class="buttons_head">
+            <button class="submit" type="submit" >Run</button>
+        </div>
+    </header>
+    <div class="rowDAta">
+    <div class="container">
+        <div class="addBoxForm">
+            <form method="post" action="{% url 'index' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <label>add weight of the box</label>
+                    <input type="text" name="weight" >
+                </div>
+                <div class="row">
+                    <label>add value of the box</label>
+                    <input type="text" name="value">
+                </div>
+                <div class="row">
+                    <label>Select City</label>
+                    <select name="destination">
+                        <option value=""></option>
+                        {% for city in cities %}
+                            <option value="{{ city.name }}">{{ city.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="buttons">
+                    <button type="submit" class="submit">add</button>
+                    <button type="reset" class="reset">cancel</button>
+                </div>
+            </form>
+        </div>
+        <div class="addTrackForm">
+            <form method="post" action="{% url 'index' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <label>add weight of the track</label>
+                    <input type="text" name="weight_of_trak" >
+                </div>
+                <div class="buttons">
+                    <button type="submit" class="submit">add</button>
+                    <button type="reset" class="reset">cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="tables">
+        <div class="boxTable">
+            <h2>Boxes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Weight</th>
+                        <th>Value</th>
+                        <th>City</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for box in boxes %}
+                        <tr>
+                            <td>{{ box.weight }}</td>
+                            <td>{{ box.value }}</td>
+                            <td>{{ box.destination_id }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="carTable">
+            <h2>Cars</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Weight of Track</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for car in cars %}
+                        <tr>
+                            <td>{{ car.weight_of_trak }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+    <div>
+        <input type="text" readonly="true" name="box" value="" hidden="true">
+    </div>
+    </body>
+    </html>
