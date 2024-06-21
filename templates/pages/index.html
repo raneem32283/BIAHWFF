@@ -11,7 +11,10 @@
     height: 75%;
     left: 0%;
     margin: 0px;
-
+    }
+    td{
+        text-align:center;
+        padding:3px;
     }
     .container{
     display: flex;
@@ -158,11 +161,30 @@ table{
     overflow-x:scroll;
     height:25%;
 }
+.imgDiv{
+    width:1000px;
+    height:1000px;
+    background-image: url("city.jpg");
+}
+.img{
+    width:200px;
+    height:200px;
+}
 </style>
 <body>
     <header class="header">
         <div class="buttons_head">
+           
+            <form method="post" action="{% url 'index' %}"  class="buttons_head">
+                {% csrf_token %}
             <button class="submit" type="submit" >Run</button>
+            </form>
+           
+            <form method="POST" action="{% url 'index' %}">
+                {% csrf_token %}
+                <button class= "submit" type="submit" >clear </button>
+            </form>
+
         </div>
     </header>
     <div class="rowDAta">
@@ -172,15 +194,15 @@ table{
                 {% csrf_token %}
                 <div class="row">
                     <label>add weight of the box</label>
-                    <input type="text" name="weight" >
+                    <input type="text" name="weight" required>
                 </div>
                 <div class="row">
                     <label>add value of the box</label>
-                    <input type="text" name="value">
+                    <input type="text" name="value" required>
                 </div>
                 <div class="row">
                     <label>Select City</label>
-                    <select name="destination">
+                    <select name="destination" required>
                         <option value=""></option>
                         {% for city in cities %}
                             <option value="{{ city.name }}">{{ city.name }}</option>
@@ -198,7 +220,7 @@ table{
                 {% csrf_token %}
                 <div class="row">
                     <label>add weight of the track</label>
-                    <input type="text" name="weight_of_trak" >
+                    <input type="text" name="weight_of_trak" required>
                 </div>
                 <div class="buttons">
                     <button type="submit" class="submit">add</button>
@@ -251,5 +273,119 @@ table{
     <div>
         <input type="text" readonly="true" name="box" value="" hidden="true">
     </div>
+    <div class="boxTable">
+        <table>
+                <thead>
+                    <tr>
+                        <th>track</th>
+                        <th>boxes</th>
+                        <th>cities</th>
+                        <th>fitness</th>
+                        <th>total value</th>
+                        <th>total weight</th>
+                        <th>best road</th>
+                        <th>Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% comment %} all={
+                        'num_cars':num_cars,
+                        'car_boxes':car_boxes,
+                        'cities_to_visit':cities_to_visit,
+                        'best_fitness':best_fitness,
+                        'car_total_value':car_total_value,
+                        'car_total_weight':car_total_weight,
+                        'route':route,
+                    } {% endcomment %}
+                    {% for array in all%}
+                    <tr>
+                        <td>
+                                {{item.num_cars}}
+                        </td>
+                        <td>
+                            {{item.car_boxes}}
+                    </td>
+                    <td>
+                        {{item.cities_to_visit}}
+                </td>
+                <td>
+                    {{item.best_fitness}}
+            </td>
+            <td>
+                {{item.car_total_value}}
+        </td>
+        <td>
+            {{item.route}}
+    </td>
+    <td>
+        {{item.route}}
+</td>
+                    </tr>
+                    {% endfor %}
+                    {% comment %} {% for car in cities_to_visit %}
+                    <tr>
+                        <td>{{ car }}</td>
+                    </tr>
+                {% endfor %}
+                {% for car in best_car_destinations %}
+                    <td>{{ car }}</td>
+            {% endfor %} {% endcomment %}
+                        {% comment %} <tr>
+                            <td>1 </td>
+                            <td>4,6,8,10</td>
+                            <td>4,2,6,1</td>
+                            <td>33.45425998452563</td>
+                            <td>300</td>
+                            <td>35</td>
+                            <td>0, 6, 2, 1, 4, 0</td>
+                            <td>39.17086338338245</td>
+                            
+                        </tr> {% endcomment %}
+                        {% comment %} <tr>
+                            <td>2 </td>
+                            <td>1,3,9</td>
+                            <td>1,3,2</td>
+                            <td>33.45425998452563</td>
+                            <td>310</td>
+                            <td>65</td>
+                            <td>0, 2, 3, 1, 0</td>
+                            <td>30.789299309159574</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>2,5,7,11</td>
+                            <td>1,2,5</td>
+                            <td>33.45425998452563</td>
+                            <td>290</td>
+                            <td>85</td>
+                            <td>0, 5, 2, 1, 0</td>
+                            <td>26.19091419134056</td>
+                        </tr> {% endcomment %}
+                </tbody>
+            </table>
+            {{best_car_destinations}}fg
+        </br>
+            {{cities_to_visit}}gf
+        </br>
+            {{car_capacity}}
+        </br>
+            {{boxes_lu}}
+            {% comment %} {% for car in car_capacity %}
+                {{ car.weight_of_trak }}
+            {% endfor %}
+            {% for booo in boxes_lu %}
+                {{ booo.weight }}
+                {{ booo.value }}
+                {{ booo.destination_id }}
+        {% endfor %} {% endcomment %}
+            {% comment %} {{response_data.best_car_destinations}}gfg
+            {{response_data.optimal_routes}}gfg {% endcomment %}
+    </div>
+    <div class="imgDiv">
+       <img src="{% static 'city.jpg' %}" class="img">
+    </div>
+    {{boxes_array}}
+    {{car_capacity_array}}
+
     </body>
     </html>
