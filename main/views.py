@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.shortcuts import render , redirect
+from django.shortcuts import render
 from django.http import JsonResponse
 from collections import defaultdict
 import random
@@ -14,26 +14,11 @@ def index(request):
     destination_id=0
     weight_of_trak=0
     capacity=0
-    if request.method == 'POST':
-        if 'clear_data' in request.POST:
-            Car.objects.all().delete()
-            Box.objects.all().delete()
-            return redirect('index')
-        if 'weight' in request.POST and 'value' in request.POST:
-            weight = request.POST.get('weight')
-            value = request.POST.get('value')
-            destination_id = request.POST.get('destination')
-            # destination_id = City.objects.get(name=city_name)
-            Box(weight=weight,value=value,destination_id=destination_id).save(False)
-        if 'weight_of_trak' in request.POST:
-            weight_of_trak = request.POST.get('weight_of_trak')
-            capacity = request.POST.get('weight_of_trak')
-            Car(weight_of_trak=weight_of_trak,capacity=capacity).save(True)
+   
+       
     cities = City.objects.all()
     boxes = Box.objects.all()
     cars = Car.objects.all()
-    return render(request, 'pages/index.html', {'cities': cities, 'boxes': boxes, 'cars': cars})
-
 car_capacity=[]
 num_cars=0
 boxes=[]
@@ -234,14 +219,24 @@ def index(request):
     #         car_loads[car]+=boxes_array[i-1][0]
     #         total += boxes_array[i-1][1]
     #     car_capacityss.append(total)
-    cars=[]
-    for i in num_cars:
-        cars.append([i])
+    # cars=[]
+    # for i in num_cars:
+    #     cars.append([i])
     optimal_routes = calculate_optimal_routes_for_cars(best_car_destinations, cities)
+    route=[]
+    cost=[]
     cities = City.objects.all()
-    for car_index, (costs, route) in enumerate(optimal_routes):
-        route.append([route])
-        # cost.append([costs])
-    all=list(cars.value(),car_boxes.value(),cities_to_visit.value(),best_fitness,car_total_value.value(),car_total_weight.value(),route.value())
-    # print(f"الشاحنة {car_index + 1} ستزور المدن في المسار الأمثل: {route} بتكلفة {cost}")
-    return render(request, 'pages/index.html', {'cities': cities, 'boxes': boxes, 'cars': cars,'all':all})
+    
+    for car_index, (costs, routes) in enumerate(optimal_routes):
+        route.append(routes)
+        costy=costs.item()
+        cost.append([costy])
+
+    allResult=[]
+    car_number=0
+    for i in range(0,num_cars):
+        car_number=i+1
+        allResult.append((car_number,car_boxes[i],cities_to_visit[i],best_fitness,car_total_value[i],car_total_weight[i],route[i],cost[i]))
+    return render(request, 'pages/index.html', {'cities': cities, 'boxes': boxes, 'cars': cars,
+                                                'allResult':allResult
+                                                })

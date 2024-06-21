@@ -1,9 +1,14 @@
 from django.urls import path
 from . import views
-urlpatterns = [
+from . import delete
+from . import addBox
+from . import addCar
+from . import non
 
-    path('',views.index, name='index'),
-    # path('',views.run_algorithms, name='run_algorithms'),
-    # path('',views.your_view, name='your_view'),
-    # path('',views.your_endpoint, name='your_endpoint'),
+urlpatterns = [
+    path('',non.non, name='non'),
+    path('index/',views.index, name='index'),
+    path('delete/',delete.delete, name='delete'),
+    path('addBox/',addBox.addBox, name='addBox'),
+    path('addCar/',addCar.addCar, name='addCar'),
 ]
